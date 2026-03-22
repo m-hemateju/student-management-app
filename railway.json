@@ -1,0 +1,24 @@
+# Railway deployment configuration
+# This file tells Railway how to build and run your Spring Boot app
+
+# Build command (Railway will run this automatically)
+build:
+  docker:
+    dockerfile: Dockerfile
+
+# Environment variables
+env:
+  - name: PORT
+    value: "8080"
+  - name: H2_CONSOLE_ENABLED
+    value: "false"
+  - name: DB_DRIVER
+    value: "com.mysql.cj.jdbc.Driver"
+  - name: DB_DIALECT
+    value: "org.hibernate.dialect.MySQLDialect"
+
+# Health check
+healthcheck:
+  path: /
+  interval: 30s
+  timeout: 10s

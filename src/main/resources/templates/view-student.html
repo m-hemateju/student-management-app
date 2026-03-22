@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details - Student Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #06b6d4;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)) !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .container-main {
+            max-width: 700px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .card-header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 25px;
+            border: none;
+        }
+        
+        .card-header h2 {
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .detail-section {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .detail-section:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-value {
+            color: #1f2937;
+            font-size: 1.05rem;
+        }
+        
+        .badge {
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .badge.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .badge.graduated {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .grade-badge {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        
+        .grade-a {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .grade-b {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .grade-c {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .grade-f {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .button-group {
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .btn-custom {
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 12px 25px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+            color: white;
+        }
+        
+        .btn-secondary-custom {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: #d1d5db;
+            color: #1f2937;
+        }
+        
+        @media (max-width: 768px) {
+            .detail-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn-custom {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap"></i> Student Management System
+            </a>
+        </div>
+    </nav>
+
+    <div class="container container-main">
+        <div class="card">
+            <div class="card-header">
+                <h2>
+                    <i class="fas fa-user-circle"></i>
+                    <span th:text="${student.name}"></span>
+                </h2>
+                <small class="text-white-50" th:if="${student.rollNumber}">Roll Number: <span th:text="${student.rollNumber}"></span></small>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-row">
+                    <div class="detail-label">Status</div>
+                    <div class="detail-value">
+                        <span th:class="'badge ' + (${student.status == 'ACTIVE'} ? 'active' : ${student.status == 'GRADUATED'} ? 'graduated' : 'inactive')"
+                              th:text="${student.status}"></span>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Email</div>
+                    <div class="detail-value">
+                        <a th:href="@{'mailto:' + ${student.email}}" th:text="${student.email}"></a>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Phone</div>
+                    <div class="detail-value" th:text="${student.phone}"></div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-row">
+                    <div class="detail-label">Department</div>
+                    <div class="detail-value" th:text="${student.department}"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">GPA</div>
+                    <div class="detail-value" th:text="${student.gpa ?: 'N/A'}"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Enrollment Date</div>
+                    <div class="detail-value" th:text="${#temporals.format(student.enrollmentDate, 'dd MMM yyyy') ?: 'N/A'}"></div>
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-row">
+                    <div class="detail-label">Marks</div>
+                    <div class="detail-value">
+                        <strong th:text="${student.marks}"></strong>/100
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Grade</div>
+                    <div class="detail-value">
+                        <div th:class="'grade-badge ' + ${student.grade}">
+                            <th:block th:switch="${student.grade}">
+                                <span th:case="'A+'">A+</span>
+                                <span th:case="'A'">A</span>
+                                <span th:case="'B+'">B+</span>
+                                <span th:case="'B'">B</span>
+                                <span th:case="'C'">C</span>
+                                <span th:case="'F'">F</span>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a th:href="@{/update/{id}(id=${student.id})}" class="btn-custom btn-primary-custom">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a href="/" class="btn-custom btn-secondary-custom">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

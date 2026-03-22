@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Student Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #06b6d4;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            margin: 20px;
+        }
+        
+        .login-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
+        }
+        
+        .login-form {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .login-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .login-banner p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .login-banner-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .form-title {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+        
+        .form-subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            border: 1.5px solid #e5e7eb;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+        
+        .btn-login {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+            color: white;
+        }
+        
+        .links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .links a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        .signup-link {
+            margin-top: 30px;
+            text-align: center;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
+        }
+        
+        .signup-link a {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 25px;
+        }
+        
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-group input {
+            cursor: pointer;
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .login-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .login-banner {
+                display: none;
+            }
+            
+            .login-form {
+                padding: 30px;
+            }
+            
+            .form-title {
+                font-size: 1.5rem;
+            }
+            
+            .links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-content">
+            <div class="login-form">
+                <h1 class="form-title">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </h1>
+                <p class="form-subtitle">Access your student management dashboard</p>
+
+                <!-- Success Message -->
+                <div th:if="${successMessage}" class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span th:text="${successMessage}"></span>
+                </div>
+
+                <!-- Error Message -->
+                <div th:if="${param.error}" class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Invalid username or password
+                </div>
+
+                <form method="post" action="/login" novalidate>
+                    <div class="form-group">
+                        <label class="form-label">Username or Email</label>
+                        <input type="text" class="form-control" name="username" placeholder="Enter your username or email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="remember" name="remember-me">
+                        <label for="remember">Remember me</label>
+                    </div>
+
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+
+                    <div class="links">
+                        <a href="/forgot-password">
+                            <i class="fas fa-key"></i> Forgot Password?
+                        </a>
+                    </div>
+
+                    <div class="signup-link">
+                        Don't have an account? 
+                        <a href="/signup">Sign up here</a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="login-banner">
+                <i class="login-banner-icon fas fa-graduation-cap"></i>
+                <h2>Student Management</h2>
+                <p>Manage and track student records efficiently with our modern platform</p>
+                <ul style="text-align: left; margin-top: 30px; opacity: 0.9;">
+                    <li><i class="fas fa-check"></i> Easy student registration</li>
+                    <li><i class="fas fa-check"></i> Performance tracking</li>
+                    <li><i class="fas fa-check"></i> Grade management</li>
+                    <li><i class="fas fa-check"></i> Real-time analytics</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
